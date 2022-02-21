@@ -16863,7 +16863,8 @@ async function run() {
     core.info(JSON.stringify(jobs, null, 2))
 		const job_status = jobs.data.jobs.reduce(
 			function(map, job) {
-				map[job.name] = job.status
+				map[job.name] = job.status;
+				return map;
 			},
 			{}
 		)
