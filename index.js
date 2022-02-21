@@ -7,11 +7,13 @@ const Handlebars = require("handlebars");
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-	  const myToken = core.getInput("github_token");
+	  const githubToken = core.getInput("github_token");
+	  const matrixToken = core.getInput("matrix_access_token");
+		const roomId = core.getInput("room_id");
 		const htmlTemplate = Handlebars.compile(core.getInput("html_template"));
 		const textTemplate = Handlebars.compile(core.getInput("text_template"));
 
-	  const octokit = github.getOctokit(myToken);
+	  const octokit = github.getOctokit(githubToken);
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 		const run_id = parseInt(process.env.GITHUB_RUN_ID);
 		const jobs = await octokit.rest.actions.listJobsForWorkflowRun({
@@ -34,9 +36,13 @@ async function run() {
 					completed_at: job.completed_at,
 					name: job.name,
 					// useful parameters for if blocks etc
-					success: job.status == "success",
-					failure: job.status == "failure",
-					cancelled: job.status == "cancelled",
+					completed: job.status == "completed",
+					neutral: job.conclusion == "neutral",
+					success: job.conclusion == "success",
+					skipped: job.conclusion == "skipped",
+					timed_out: job.conclusion == "timed_out",
+					failure: job.conclusion == "failure",
+					cancelled: job.conclusion == "cancelled",
 				};
 				return map;
 			},
@@ -46,8 +52,43 @@ async function run() {
 		   job_statuses: job_status,
 
 		}
+		core.group("Text Template");
     core.info(textTemplate(data));
+		core.endgroup()
+		core.group("HTML Template");
 		core.info(htmlTemplate(data));
+		core.endgroup()
+
+		// TODO hookshot integration here
+
+		// UNTIL THEN:
+		if (matrixToken != "") {
+			const requestData = JSON.stringify({
+			 "body": textTemplate(data),
+       "format": "org.matrix.custom.html",
+       "formatted_body": htmlTemplate(data),
+       "msgtype": "m.text"
+			});
+
+			const txnId = "txn_"+Date.now();
+			const options = {
+			  hostname: "matrix-client.matrix.org",
+				port: "443",
+				path: `/_matrix/client/v3/rooms/${roomId}/send/m.room.message/${txnId}`,
+				headers: { 
+					"Authentication":`Bearer ${ matrixToken }`
+				},
+				method: "POST"
+			};
+
+			const req = https.request(options, (res) => {
+				core.info(`Got ${ res.statusCode }`);
+			});
+			req.write(requestData);
+			req.end();
+		} else {
+		  core.info("Not continuing to send to matrix, no matrixToken set")
+		}
   } catch (error) {
     core.setFailed(error.message);
   }

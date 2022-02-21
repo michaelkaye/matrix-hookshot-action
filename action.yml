@@ -10,6 +10,12 @@ inputs:
   html_template:
     description: HTML template to render
     required: true
+  matrix_access_token:
+    description: Matrix access token
+    required: false
+  matrix_room_id:
+    description: Matrix room ID
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
