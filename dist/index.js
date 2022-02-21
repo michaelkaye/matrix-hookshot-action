@@ -16845,6 +16845,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 const Handlebars = __nccwpck_require__(7492);
+const https = __nccwpck_require__(5687);
 
 
 // most @actions toolkit packages have async methods

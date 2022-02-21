@@ -2,6 +2,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const Handlebars = require("handlebars");
+const https = require('https');
 
 
 // most @actions toolkit packages have async methods
