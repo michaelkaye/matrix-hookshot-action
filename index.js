@@ -11,8 +11,8 @@ async function run() {
 		
 	  const octokit = github.getOctokit(myToken)
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
-		const run_id = process.env.GITHUB_RUN_ID
-		const jobs = octokit.rest.actions.listJobsForWorkflowRun({
+		const run_id = int(process.env.GITHUB_RUN_ID)
+		const jobs = await octokit.rest.actions.listJobsForWorkflowRun({
   		owner,
 		  repo,
 			run_id,
