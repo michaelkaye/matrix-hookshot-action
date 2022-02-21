@@ -1,7 +1,10 @@
 name: 'Send matrix message'
 description: 'Submit message to a matrix-hookshot webhook server'
 inputs:
-outputs:
+  github_token:
+    description: Github token to work with
+    required: true
+    
 runs:
   using: 'node12'
   main: 'dist/index.js'
