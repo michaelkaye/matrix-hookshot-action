@@ -52,12 +52,8 @@ async function run() {
 		   job_statuses: job_status,
 
 		}
-		core.group("Text Template");
     core.info(textTemplate(data));
-		core.endgroup()
-		core.group("HTML Template");
 		core.info(htmlTemplate(data));
-		core.endgroup()
 
 		// TODO hookshot integration here
 
