@@ -16860,7 +16860,7 @@ async function run() {
 		  repo,
 			run_id,
 		});
-    
+    core.info(JSON.stringify(jobs, null, 2))
 		const job_status = jobs.reduce(
 			function(map, job) {
 				map[job.name] = job.status
