@@ -16861,7 +16861,7 @@ async function run() {
 			run_id,
 		});
     
-		const job_status = jobs.jobs.reduce(
+		const job_status = jobs.reduce(
 			function(map, job) {
 				map[job.name] = job.status
 			},
