@@ -25,3 +25,5 @@ jobs:
     - uses: ./
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        text_template: "{{ job_statuses.units.name }} {{ job_statuses.units.status }} at {{ job_statuses.units.completed_at }} {{ job_statuses.units.html_url }}"
+        html_template: "{{ job_statuses.units.name }} {{ job_statuses.units.status }} at {{ job_statuses.units.completed_at }} <a href=\"{{ job_statuses.units.html_url }}\">[details]</a>"

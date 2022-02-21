@@ -4,7 +4,12 @@ inputs:
   github_token:
     description: Github token to work with
     required: true
-    
+  text_template:
+    description: Fallback text template to render
+    required: true
+  html_template:
+    description: HTML template to render
+    required: true
 runs:
   using: 'node12'
   main: 'dist/index.js'
