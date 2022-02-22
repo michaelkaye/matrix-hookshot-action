@@ -16918,7 +16918,7 @@ async function run() {
 				headers: { 
 					"Authentication":`Bearer ${ matrixToken }`
 				},
-				method: "POST"
+				method: "PUT"
 			};
 
 			const req = https.request(options, (res) => {
