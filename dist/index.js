@@ -16904,7 +16904,7 @@ async function run() {
 
 		}
 		core.startGroup('Rendering Source data to Text and HTML');
-		core.info("Source: " + JSON.Stringify(data));
+		core.info("Source: " + JSON.stringify(data));
     core.info("Text  : " + textTemplate(data));
 		core.info("HTML  : " + htmlTemplate(data));
     core.endGroup();
