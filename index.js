@@ -72,7 +72,7 @@ async function run() {
 			  hostname: "matrix-client.matrix.org",
 				port: "443",
 				path: `/_matrix/client/r0/rooms/${roomId}/send/m.room.message/${txnId}?access_token=${matrixToken}`,
-				method: "POST"
+				method: "PUT"
 			};
 
 			const req = https.request(options, (res) => {
