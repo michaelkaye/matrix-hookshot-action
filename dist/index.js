@@ -16914,11 +16914,8 @@ async function run() {
 			const options = {
 			  hostname: "matrix-client.matrix.org",
 				port: "443",
-				path: `/_matrix/client/v3/rooms/${roomId}/send/m.room.message/${txnId}`,
-				headers: { 
-					"Authentication":`Bearer ${ matrixToken }`
-				},
-				method: "PUT"
+				path: `/_matrix/client/r0/rooms/${roomId}/send/m.room.message/${txnId}?access_token=${matrixToken}`,
+				method: "POST"
 			};
 
 			const req = https.request(options, (res) => {
