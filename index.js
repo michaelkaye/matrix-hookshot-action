@@ -3,7 +3,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const Handlebars = require("handlebars");
 const https = require('https');
-
+const url = require('url');
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -11,6 +11,7 @@ async function run() {
 	  const githubToken = core.getInput("github_token");
 	  const matrixToken = core.getInput("matrix_access_token");
 		const matrixRoomId = core.getInput("matrix_room_id");
+		const hookshotUrl = core.getInput("hookshotUrl");
 		const htmlTemplate = Handlebars.compile(core.getInput("html_template"));
 		const textTemplate = Handlebars.compile(core.getInput("text_template"));
 
@@ -49,6 +50,12 @@ async function run() {
 			},
 			{}
 		)
+
+		// If you are looking for further data then please submit a PR to calculate and add it
+		// Will accept any data additions that do not expose secrets or sensitive information
+		// The action is designed to use a whitelist of acceptable data because it could be easily
+		// used as part of a chain to exfiltrate secrets otherwise.
+
 		const data = {
 		   job_statuses: job_status,
 
@@ -56,9 +63,33 @@ async function run() {
     core.info(textTemplate(data));
 		core.info(htmlTemplate(data));
 
-		// TODO hookshot integration here
+		if (hookshotUrl != "") {
+		  const url = new URL(hookshotUrl);
+			const requestData = JSON.stringify({
+			 "text": textTemplate(data),
+       "html": htmlTemplate(data),
+			});
 
-		// UNTIL THEN:
+			const options = {
+			  hostname: target.hostname,
+				port: target.port,
+				path: target.path,
+				method: "PUT"
+			};
+
+			const req = https.request(options, (res) => {
+				core.info(`StatusCode: ${ res.statusCode }`);
+				res.on("data", function(chunk) {
+				  core.info(`Body: ${chunk}`);
+				});
+			});
+			req.write(requestData);
+			req.end();
+			
+		} else {
+		  core.info("No hookshot URL, no notification sent")
+		}
+
 		if (matrixToken != "") {
 			const requestData = JSON.stringify({
 			 "body": textTemplate(data),
