@@ -60,8 +60,11 @@ async function run() {
 		   job_statuses: job_status,
 
 		}
-    core.info(textTemplate(data));
-		core.info(htmlTemplate(data));
+		core.startGroup('Rendering Source data to Text and HTML');
+		core.info("Source: " + JSON.Stringify(data));
+    core.info("Text  : " + textTemplate(data));
+		core.info("HTML  : " + htmlTemplate(data));
+    core.endGroup();
 
 		if (hookshotUrl != "") {
 		  const url = new URL(hookshotUrl);
