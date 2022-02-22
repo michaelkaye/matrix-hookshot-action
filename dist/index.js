@@ -16920,6 +16920,9 @@ async function run() {
 
 			const req = https.request(options, (res) => {
 				core.info(`Got ${ res.statusCode }`);
+				res.on("data", function(chunk) {
+				  core.info(`Got ${chunk}`);
+				});
 			});
 			req.write(requestData);
 			req.end();
