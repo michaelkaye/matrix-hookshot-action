@@ -27,5 +27,5 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         matrix_access_token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
         matrix_room_id: ${{ secrets.MATRIX_ROOM_ID }}
-        text_template: "{{ job_statuses.units.name }} {{ job_statuses.units.status }} at {{ job_statuses.units.completed_at }} {{ job_statuses.units.html_url }}"
-        html_template: "{{ job_statuses.units.name }} {{ job_statuses.units.status }} at {{ job_statuses.units.completed_at }} <a href=\"{{ job_statuses.units.html_url }}\">[details]</a>"
+        text_template: "Test {{ job_statuses.units.name }} {{ job_statuses.units.status }} at {{ job_statuses.units.completed_at }} {{ job_statuses.units.html_url }}"
+        html_template: "Automated test ({{ job_statuses.units.name }}) {{ job_statuses.units.status }} at {{ job_statuses.units.completed_at }} <a href=\"{{ job_statuses.units.html_url }}\">[details]</a>"
