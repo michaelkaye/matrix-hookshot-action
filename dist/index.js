@@ -16853,7 +16853,7 @@ async function run() {
   try {
 	  const githubToken = core.getInput("github_token");
 	  const matrixToken = core.getInput("matrix_access_token");
-		const roomId = core.getInput("room_id");
+		const matrixRoomId = core.getInput("matrix_room_id");
 		const htmlTemplate = Handlebars.compile(core.getInput("html_template"));
 		const textTemplate = Handlebars.compile(core.getInput("text_template"));
 
@@ -16914,7 +16914,7 @@ async function run() {
 			const options = {
 			  hostname: "matrix-client.matrix.org",
 				port: "443",
-				path: `/_matrix/client/r0/rooms/${roomId}/send/m.room.message/${txnId}?access_token=${matrixToken}`,
+				path: `/_matrix/client/r0/rooms/${matrixRoomId}/send/m.room.message/${txnId}?access_token=${matrixToken}`,
 				method: "PUT"
 			};
 
