@@ -2,7 +2,7 @@ name: 'Send matrix message'
 description: 'Submit message to a matrix-hookshot webhook server'
 inputs:
   github_token:
-    description: Github token to work with (should be ${{secrets.GITHUB_TOKEN }})
+    description: Github token to work with (should be secrets.GITHUB_TOKEN )
     required: true
   text_template:
     description: Fallback text template to render
