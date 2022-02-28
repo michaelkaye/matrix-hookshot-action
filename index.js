@@ -28,7 +28,7 @@ async function run() {
 				  return '⚪️';
 			}
 		});
-	  Handlebars.registerHelper('colour', function (aString) {
+	  Handlebars.registerHelper('color', function (aString) {
 			switch(aString) {
 				case 'failure':
 				case 'timed_out':
