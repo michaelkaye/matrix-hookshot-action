@@ -16857,7 +16857,34 @@ async function run() {
 		const hookshotUrl = core.getInput("hookshotUrl");
 		const htmlTemplate = Handlebars.compile(core.getInput("html_template"));
 		const textTemplate = Handlebars.compile(core.getInput("text_template"));
-
+	  Handlebars.registerHelper('icon', function (aString) {
+			switch(aString) {
+				case 'failure':
+				case 'timed_out':
+				  return '🔴';
+			  case 'success':
+				  return '🟢';
+			  case 'neutral':
+				case 'skipped':
+				case 'cancelled':
+				default:
+				  return '⚪️';
+			}
+		});
+	  Handlebars.registerHelper('color', function (aString) {
+			switch(aString) {
+				case 'failure':
+				case 'timed_out':
+				  return 'crimson';
+			  case 'success':
+				  return 'olive';
+			  case 'neutral':
+				case 'skipped':
+				case 'cancelled':
+				default:
+				  return 'black';
+		  }
+		});
 	  const octokit = github.getOctokit(githubToken);
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 		const run_id = parseInt(process.env.GITHUB_RUN_ID);
