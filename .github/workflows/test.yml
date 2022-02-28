@@ -42,5 +42,5 @@ jobs:
         matrix_room_id: ${{ secrets.MATRIX_ROOM_ID }}
         text_template: "Test"
         html_template: "Sanity test run results<ul>{{#each job_statuses }}{{#with this }}{{#if completed }}
-<li>{{name}} {{icon conclusion }} <span style='color:{{colour conclusion }}'>{{conclusion}}</span> at {{completed_at}} <a href=\"{{html_url}}\">[details]</a></li>{{/if}}{{/with}}{{/each}}
+<li>{{name}} {{icon conclusion }} <font color='{{colour conclusion }}'>{{conclusion}}</font> at {{completed_at}} <a href=\"{{html_url}}\">[details]</a></li>{{/if}}{{/with}}{{/each}}
 </ul>"
