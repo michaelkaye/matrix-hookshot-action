@@ -1,65 +1,59 @@
-# Matrix-Hookshot-Action
+# matrix-hookshot-action
 
-## Code in Main
+A Github Action for sending updates to a matrix room via a [https://github.com/matrix-org/matrix-hookshot](matrix-hookshot) bot.
 
-Install the dependencies
-
-```bash
-npm install
-```
-
-Run the tests :heavy_check_mark:
-
-```bash
-$ npm test
-...
-```
-
-## Package for distribution
-
-GitHub Actions will run the entry point from the action.yml. Packaging assembles the code into one file that can be checked in to Git, enabling fast and reliable execution and preventing the need to check in node_modules.
-
-Actions are run from GitHub repos.  Packaging the action will create a packaged action in the dist folder.
-
-Run prepare
-
-```bash
-npm run prepare
-```
-
-Since the packaged index.js is run from the dist folder.
-
-```bash
-git add dist
-```
-
-## Create a release branch
-
-Users shouldn't consume the action from master since that would be latest code and actions can break compatibility between major versions.
-
-Checkin to the v1 release branch
-
-```bash
-git checkout -b v1
-git commit -a -m "v1 release"
-```
-
-```bash
-git push origin v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket:
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
 
 ## Usage
 
 You can now consume the action by referencing the v1 branch
 
 ```yaml
-uses: michaelkaye/matrix-hookshot-action@v1
+uses: michaelkaye/matrix-hookshot-action@<version>
 with:
-  milliseconds: 1000
+  github_token: ${{ secrets.GITHUB_TOKEN }}
+  hookshot_url: ${{ secrets.HOOKSHOT_URL }}
+  text_template: "Handlebars Template"
+  html_template: "HTML Handlebars Template"
 ```
+
+The hookshot URL should be stored as a github Secret on the repository, and this will prevent general access to the endpoint.
+
+## Handlebars Template
+
+This project uses handlebars to template out the notification messages.
+
+We provide a few helper methods and make some data available.
+
+|| Data   ||  Purpose ||
+|| job\_statuses || {{#each job\_statuses }}...{{/each}} . Can be used to iterate over all job statuses to provide lists of responses ||
+|| job\_statuses[n].name || Name of job ||
+|| job\_statuses[n].conclusion || Conclusion of job (eg success, skipped, cancelled), can be null if status is not completed. ||
+|| job\_statuses[n].status || Status of job (eg in\_progress / completed) ||
+|| job\_statuses[n].started\_at || Start time ||
+|| job\_statuses[n].completed\_at || Completion time ||
+|| job\_statuses[n].html\_url || URL to github action result page ||
+|| job\_statuses[n].completed || True if job status is completed ||
+|| job\_statuses[n].neutral || True if job conclusion is neutral ||
+|| job\_statuses[n].success || True if job conclusion is success ||
+|| job\_statuses[n].skipped || True if job conclusion is skipped ||
+|| job\_statuses[n].timed\_out || True if job conclusion is timed\_out ||
+|| job\_statuses[n].failure || True if job conclusion is failure ||
+|| job\_statuses[n].cancelled || True if job conclusion is cancelled ||
+
+
+|| Helper || Example || Purpose ||
+|| color  || {{color conclusion }} || Provides a html safe colour code for the given conclusion or status, eg {{color "success" }} would be green ||
+|| icon   || {{icon conclusion }} || Provides an appropriate emoji for the given conclusion or status, eg {{icon "success" }}} would be a '🟢'
+
+Further helpers / data can be exposed - open an issue or PR with an example of how you would use it.
+
+## Alternative direct matrix client usage
+
+TL;DR: This is dangerous if you do not correctly manage permissions. Try to use hookshot instead.
+
+Providing a matrix room ID and a matrix access token can act as an alternative to the hookshot url. This is inefficient, insecure and not the purpose of this action.
+
+See the [.github/workflows/test.yml](github actions configuration) under `accessToken` for this project for a worked example of this.
+
+Security: However, doing this provides anyone with access to the access token read write and edit access to the matrix room. If you must use this option, create a brand new user for the purpose and ensure it does not have elevated permissions in any room it is joined to.
+
