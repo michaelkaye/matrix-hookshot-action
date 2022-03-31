@@ -4,7 +4,7 @@ A Github Action for sending updates to a matrix room via a [https://github.com/m
 
 ![A screenshot showing an example of output in element-desktop](https://user-images.githubusercontent.com/1917473/160877525-e1ffadf8-9013-4602-89fc-62b6bfab5a89.png)
 
-
+The format of the update is templatable (both text and html) to your needs.
 
 ## Usage
 
