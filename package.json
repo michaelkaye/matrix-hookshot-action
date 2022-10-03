@@ -26,7 +26,7 @@
   "homepage": "https://github.com/michaelkaye/matrix-hookshot-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.5",
-    "@actions/github": "^5.0.0",
+    "@actions/github": "^5.1.1",
     "handlebars": "^4.7.7"
   },
   "devDependencies": {
